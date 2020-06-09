@@ -49,16 +49,15 @@ for l = -7:7
     end 
 end
 S = flipud(S); %flip matrix about vertical axis (10^-7, 10^-7 in bottom left) 
-
-%Lables for Heatmap
-xvalues = {'10^-7' '10^-6' '10^-5' '10^-4' '10^-3'  '10^-2' '10^-1' '10^0' ...
-    '10^1' '10^2' '10^3' '10^4' '10^5' '10^6' '10^7'}
-yvalues = flip(xvalues)
+xvalues = {'10^-7' '10^-6' '10^-5' '10^-4' '10^-3'  '10^-2' '10^-1' '10^0' '10^1' '10' '10^3' '      ' '10^5' ...
+    '          ' '10^7'}
+yvalues = {'10^-7' ' ' '10^-5' '  ' '10^-3'  '   ' '10^-1' '    ' '10^1' '     ' '10^3' '      ' '10^5' ...
+    '          ' '10^7'} 
 
 h = heatmap(xvalues, yvalues, S/max(max(S)), 'Colormap', parula, 'CellLabelColor','none');
 
-h.XLabel = 'Ligand 1 (log)'
-h.YLabel = 'Ligand 2 (log)'
+h.Xlabel = 'Ligand 1'
+h.Ylabel = 'Ligand 2'
 
 
 
