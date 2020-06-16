@@ -53,7 +53,7 @@ for l = -7:7
         T_ijk_0 = zeros(2,2,2);
 
 
-        T_ijk = fmincon(@(T_ijk)erf_Tijk(Ai_0, Lj, Bk_0, K_ij, gamma_j, K_ijk, T_ijk), T_ijk_0);
+        T_ijk = fmincon(@(T_ijk)erf_Tijk(Ai_0, Lj, Bk_0, K_ij, gamma_j, K_ijk, T_ijk), T_ijk_0, [], [], [], [], T_ijk_0, Inf*ones(2,2,2));
         
         S(l+8,m+8) = sum(sum(sum(epsilon_ijk.*T_ijk)));
     end 
