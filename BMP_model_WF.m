@@ -1,7 +1,7 @@
 %This code requires the 'Optimization Toolbox' to use fmincon properly,
 %otherwise you'll recieve an error
 
-rng(2)
+%rng(13)
 
 %epsilon relates to how "active" a 2*Receptor-Ligand complex is
 %(phos:dephos), similar to K_D for enzymes.
@@ -28,8 +28,8 @@ K_ij = rand(2,2)
 
 gamma_j = [sum(K_ij(:,1)) sum(K_ij(:,2))];
 
-K_ij = 1/gamma_j(1)*K_ij
-K_ij_2 = 1/gamma_j(2)*K_ij
+% K_ij = 1/gamma_j(1)*K_ij
+% K_ij_2 = 1/gamma_j(2)*K_ij
 
 
 
@@ -44,8 +44,8 @@ K_ij_2 = 1/gamma_j(2)*K_ij
 
 Lj = [0 0]
 S = zeros(7)
-for l = -7:7
-    for m = -7:7
+for l = -3.5:0.5:3.5
+    for m = -3.5:0.5:3.5
         Lj(1) = 10^l;
         Lj(2) = 10^m;
         
@@ -55,7 +55,7 @@ for l = -7:7
 
         T_ijk = fmincon(@(T_ijk)erf_Tijk(Ai_0, Lj, Bk_0, K_ij, gamma_j, K_ijk, T_ijk), T_ijk_0, [], [], [], [], T_ijk_0, Inf*ones(2,2,2));
         
-        S(l+8,m+8) = sum(sum(sum(epsilon_ijk.*T_ijk)));
+        S(l*2+8,m*2+8) = sum(sum(sum(epsilon_ijk.*T_ijk)));
     end 
 end
 S = flipud(S); %flip matrix about vertical axis (10^-7, 10^-7 in bottom left) 
