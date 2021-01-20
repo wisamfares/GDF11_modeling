@@ -6,7 +6,7 @@ rng(25)
 
 %epsilon relates to how "active" a 2*Receptor-Ligand complex is
 %(phos:dephos), similar to K_D for enzymes.
-epsilon_ijk = rand(2,2,2); %phosphorylation rate (element of symbol)/ desphosphorylation (gamma) of T_ijk 
+epsilon_ijk = rand(2,2,2); %phosphorylation rate ('element of' symbol)/ desphosphorylation (gamma) of T_ijk 
 alpha = 1/sum(sum(sum(epsilon_ijk))); %alpha used for normalization so that sum of epsilons equals one
 epsilon_ijk = alpha*epsilon_ijk %normalization of epsilon with alpha
 
@@ -82,9 +82,9 @@ for i = 1:8
     heatmap(xvalues, yvalues, flipud(trimers(:,:,i)), 'Colormap', parula, 'CellLabelColor','none')
 end
 
-figure(2) 
+figure(2)
 h = heatmap(xvalues, yvalues, S/max(max(S)), 'Colormap', parula, 'CellLabelColor','none');
-
+% 
 % h.XLabel = 'Ligand 1 (log)'
 % h.YLabel = 'Ligand 2 (log)'
 
