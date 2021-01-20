@@ -1,4 +1,4 @@
-function Mtx=Model_2d(Xconc,Yconc,prm,Solver)
+function [Mtx,T]=Model_2d(Xconc,Yconc,prm,Solver)
 
 if ~exist('Solver','var')
     Solver=@ModelSolver_2step;
@@ -14,7 +14,8 @@ Mtx=zeros(length(Xconc),length(Yconc));
 
 for Xidx=1:length(Xconc)
     for Yidx=1:length(Yconc)
-        Mtx(Xidx,Yidx)=Solver([Xconc(Xidx);Yconc(Yidx)], A, B, KA, KB, E);
+        [Mtx(Xidx,Yidx),~,T]=Solver([Xconc(Xidx);Yconc(Yidx)], ...
+            A, B, KA, KB, E);
     end
 end
 

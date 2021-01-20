@@ -1,4 +1,4 @@
-function [Sig,err,T]=ModelSolver_2step(L, A, B, KA, KB, E)
+function [Sig,err,T]=ModelSolver_2step_WF(L, A, B, KA, KB, E)
 
 %
 % vector order: A1L1B1, A2L1B1, A1L2B1, A2L2B1, and same with B2.
@@ -47,7 +47,7 @@ E = reshape(E,1,NA*NL*NB);
 Acon=[1,1,1,1,0,0,0,0;
     0,0,0,0,1,1,1,1];   
 
-%Keeping consistent with variable names for fmincon
+%Keeping consisten with variable names for fmincon
 Bcon=B;
 
 %upper bound:
@@ -62,7 +62,7 @@ optionsFMC= optimoptions('fmincon','display','off','MaxFunEvals',8000,'MaxIter',
 % try first with no bounds as it is faster
 [T,~,~,exitflag] = lsqnonlin(@errfunc, T0, [], [], options);
 count=0;
-while any(T<0) || any(sum(sum(reshape(T,2,2,2),1),2)>Bk)
+while any(T<0) || any(sum(sum(reshape(T,NL,NA,NB),1),2)>Bk)
     [T,~,exitflag] = fmincon(@(x) sum(errfunc(x).^2), T0/(2^count), Acon, Bcon, [],[],LB,UB,[],optionsFMC);
     T0=T;
     [T,~,~,exitflag] = lsqnonlin(@errfunc, T, [], [], options);    
@@ -71,7 +71,7 @@ while any(T<0) || any(sum(sum(reshape(T,2,2,2),1),2)>Bk)
     end
     count=count+1;
 end
-if any(T<0) || any(sum(sum(reshape(T,2,2,2),1),2)>Bk)
+if any(T<0) || any(sum(sum(reshape(T,NL,NA,NB),1),2)>Bk)
     warning('Negative receptor Level. L: %d %d, A: %d %d B: %d %d',L, A, B)
     err=1;
 end
@@ -92,10 +92,10 @@ Sig=E*T;
         Ck = repmat(Ck, [NA,NL,1]);
         Cij = KAij;
         Cij = repmat(Cij,[1, 1, NB]);
-        Ci = (Ai-squeeze(sum(sum(xijk,2),3))) ./ (1+KAij*Lj'); %squeeze changes 3D matrix to 2D, note matrix multipication for shorthanded summation
+        Ci = (Ai-squeeze(sum(sum(xijk,2),3))) ./ (1+KAij*Lj'); %squeeze changes 3D matrix to 2D
         Ci = repmat(Ci,[1, NL, NB]);
         Cj = Lj;
-        Cj = repmat(Lj,[NA, 1, NB]);
+        Cj = repmat(Cj,[NA, 1, NB]);
         
         err = reshape(Cijk.*Ck.*Cij.*Ci.*Cj,[],1) - x;
     end
