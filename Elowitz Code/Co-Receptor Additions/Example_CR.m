@@ -1,13 +1,13 @@
 %Ligand Space [Concentrations: (X,Y)]
-XC=logspace(-1.4,2.5,13);
-YC=logspace(-0.9,3.5,13);
+XC=logspace(-1.4,1.2,13);
+YC=logspace(-0.9,1.2,13);
 
 
 %Original Parameters from Elowitz (C_h added)
 prms = [
     0.07,0.0072,...A_j receptors
     14.5,0.002,...B_k receptors
-    10^-12,10^-12,...C_h coreceptors
+    10^-5,2.5,...C_h coreceptors
     1,1,1,1,...kD_f_ij
     0.55^-1,0.45^-1,0.032^-1,0.97^-1,...kD_r_ij
     1,1,1,1,1,1,1,1,...kT_f_ijk
@@ -15,7 +15,7 @@ prms = [
     1,1,1,1,...kCL_f_hj
     5^-1,4^-1,8^-1,2^-1,...kCL_r_hij
     1,1,1,1,1,1,1,1,...kCD_f_hij
-    10^-1,11^-1,12^-1,8^-1,3^-1,14^-1,16^-1,18^-1,...kCD_r_hij
+    0.08^-1,0.02^-1,0.012^-1,0.018^-1,0.03^-1,0.0014^-1,0.016^-1,0.118^-1,...kCD_r_hij
     0.012,0.48,0.097,0.047,0.18,0.044,0.087,0.048...e_ijk
     ];
 
@@ -39,9 +39,11 @@ prms(47:54) = prms(47:54)*2;
 
 
 %Plot Signaling Heatmap
-figure(7)
-title('Coreceptor')
+figure(10)
 [MIMB,T] =Model_2d_CR(XC, YC, prms);
 imagesc(MIMB)
 set(gca,'YDir','normal')
+title('Coreceptor Model with Reduced Ligand Range, CR_2 =2.5')
+xaxis(XC)
+yaxis(YC)
 

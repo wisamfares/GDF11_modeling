@@ -60,3 +60,7 @@ MIMB=Model_2d_WF(XC, YC, prms);
 imagesc(MIMB)
 set(gca,'YDir','normal')
 
+
+xaxis(XC)
+yaxis(YC)
+
