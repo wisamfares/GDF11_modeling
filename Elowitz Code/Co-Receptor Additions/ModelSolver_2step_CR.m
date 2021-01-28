@@ -98,7 +98,7 @@ LB=zeros(N,1); %Lower bound for T_ijk is obviously 0
 T0 = zeros(N,1); %length NA*NL*NB + NC*NL (12 for (2,2,2,2) case
 options= optimoptions('lsqnonlin','display','off','MaxFunEvals',8000,'MaxIter',4000);
 optionsFMC= optimoptions('fmincon','display','off','MaxFunEvals',8000,'MaxIter',4000);
-% try first with no bounds as it is faster
+% try first with no bounds as it is faster -- NOT SURE IF THIS IS GOOD
 [T,~,~,exitflag] = lsqnonlin(@errfunc_CR, T0, [], [], options);
 count=0;
 
@@ -107,7 +107,7 @@ CL_check = T(1:4);
 while any(T<0) || any(sum(sum(reshape(T_check,1,2,2,2),2),3)>Bk) || any(sum(reshape(CL_check,2,1,2,1),3)>Ch)
     [T,~,exitflag] = fmincon(@(x) sum(errfunc_CR(x).^2), T0/(2^count), Acon, Bcon, [],[],LB,UB,[],optionsFMC);
     T0=T;
-    %[T,~,~,exitflag] = lsqnonlin(@errfunc_CR, T, [], [], options);    
+    [T,~,~,exitflag] = lsqnonlin(@errfunc_CR, T, LB, [], options);    
     if count>5
         break
     end
@@ -120,11 +120,11 @@ end
 T_check = T(5:12);%Need to add a similiar check for CL_hj < Ch
 CL_check = T(1:4); 
 if any(T<0) || any(sum(sum(reshape(T_check,1,2,2,2),2),3)>Bk) || any(sum(reshape(CL_check,2,1,2,1),3)>Ch)
-    warning('Negative receptor Level. L: %d %d, A: %d %d B: %d %d',L, A, B)
+    warning('Negative receptor Level. L: %d %d, A: %d %d B: %d %d',Lj(1), Lj(2), Ai(1), Ai(2) , Bk(1), Bk(2))
     err=1;
 end
 if exitflag==0
-    warning('No minima reached. L: %d %d, A: %d %d B: %d %d',L, A, B)
+    warning('No minima reached. L: %d %d, A: %d %d B: %d %d',Lj, Ai, Bk)
     err=1;
 end
     
