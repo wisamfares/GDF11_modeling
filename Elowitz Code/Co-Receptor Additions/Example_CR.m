@@ -1,13 +1,13 @@
 %Ligand Space [Concentrations: (X,Y)]
-XC=logspace(-1.4,1.2,13);
-YC=logspace(-0.9,1.2,13);
+XC=logspace(-2.5,2.5,13);
+YC=logspace(-2.5,2.5,13);
 
 
 %Original Parameters from Elowitz (C_h added)
 prms = [
     0.07,0.0072,...A_j receptors
     14.5,0.002,...B_k receptors
-    10^-5,2.5,...C_h coreceptors
+    10^-5,10^-5,...C_h coreceptors
     1,1,1,1,...kD_f_ij
     0.55^-1,0.45^-1,0.032^-1,0.97^-1,...kD_r_ij
     1,1,1,1,1,1,1,1,...kT_f_ijk
@@ -43,7 +43,16 @@ figure(10)
 [MIMB,T] =Model_2d_CR(XC, YC, prms);
 imagesc(MIMB)
 set(gca,'YDir','normal')
-title('Coreceptor Model with Reduced Ligand Range, CR_2 =2.5')
-xaxis(XC)
-yaxis(YC)
+set(gca,'dataAspectRatio',[1 1 1]);
+expon = linspace(-2.5,2.5,13);
+label = cell(1,length(XC));
+for i = 1:length(XC)
+    label{i} =['10^{' num2str(round(expon(i),2)) '}'];
+end
+set(gca,'XTick',1:2:13,'XTickLabel',label(1:2:13))
+set(gca,'YTick',1:2:13, 'YTickLabel',label(1:2:13))
+
+xlabel('Ligand 1')
+ylabel('Ligand 2')
+
 
